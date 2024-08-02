@@ -6,8 +6,8 @@ local types = require('openmw.types')
 
 local animation = require('openmw.animation')
 local I = require('openmw.interfaces')
-local animManager = require(mp.."scripts/anim_manager")
-local gutils = require(mp.."scripts/gutils")
+local animManager = require(mp .. "scripts/anim_manager")
+local gutils = require(mp .. "scripts/gutils")
 
 local attackTypes = { "chop", "slash", "thrust" }
 local attackCounters = {}
@@ -83,7 +83,7 @@ local function locomotionAnimSpeed()
 
     local moveAnimSpeed = 154.064
     if isSneaking then
-        moveAnimSpeed = 33.5452*2.8
+        moveAnimSpeed = 33.5452 * 2.8
     elseif isRunning then
         moveAnimSpeed = 222.857
     end
@@ -162,7 +162,7 @@ local animations = {
         startOnUpdate = true
     },
     {
-        parent = "idle1s",
+        parent = {"idle1s","idle1ssneak"},
         groupname = "idleshield",
         condition = function()
             return gutils.isAShield(selfActor:getEquipment(types.Actor.EQUIPMENT_SLOT.CarriedLeft))
@@ -184,7 +184,7 @@ local animations = {
         startOnAnimEvent = true
     },
     {
-        parent = { "runforward1s", "runback1s", "runleft1s", "runright1s", "walkforward1s", "walkback1s", "walkleft1s", "walkright1s" },
+        parent = { "runforward1s", "runback1s", "runleft1s", "runright1s", "walkforward1s", "walkback1s", "walkleft1s", "walkright1s", "sneakforward1s", "sneakback1s", "sneakleft1s", "sneakright1s" },
         groupname = "runforwardshield",
         condition = function()
             return gutils.isAShield(selfActor:getEquipment(types.Actor.EQUIPMENT_SLOT.CarriedLeft))
@@ -371,7 +371,7 @@ local function onUpdate(dt)
     end
 
 
-    
+
 
 
 
