@@ -338,6 +338,17 @@ end)
 local function onUpdate(dt)
     if camera.MODE.FirstPerson ~= camera.getMode() then return end
 
+    -- if not animManager.isPlaying("weapononehand1") then
+    --     I.AnimationController.playBlendedAnimation("weapononehand1", {
+    --         startKey = "chop start",
+    --         startkey = "chop start",
+    --         stopKey = "chop large follow stop",
+    --         stopkey = "chop large follow stop",
+    --         priority = 13,
+    --         speed = 2
+    --     })
+    -- end
+
     for _, anim in ipairs(animations) do
         local isParentPlaying = nil
         local isPlaying = nil
