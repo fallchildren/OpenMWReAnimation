@@ -2,4 +2,4 @@ blending_rules:
   - from: "*:shoot follow start"
     to: "*"
     easing: "sineInOut"
-    duration: 0.4
+    duration: 0.5
