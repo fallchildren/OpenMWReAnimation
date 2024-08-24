@@ -381,12 +381,6 @@ local function onUpdate(dt)
         end
     end
 
-
-
-
-
-
-
     -- View inertia experiments
     --print(omwself.controls.pitchChange,omwself.rotation:getPitch())
 
