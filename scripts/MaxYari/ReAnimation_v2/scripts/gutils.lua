@@ -1,8 +1,10 @@
 local core = require('openmw.core')
 local types = require('openmw.types')
 local util = require('openmw.util')
-local status, omwself = pcall(require, "openmw.self")
-local status, nearby = pcall(require, "openmw.nearby")
+local animation = require('openmw.animation')
+local camStatus, camera = pcall(require,"openmw.camera")
+local omwSelfStatus, omwself = pcall(require, "openmw.self")
+local nearbyStatus, nearby = pcall(require, "openmw.nearby")
 
 local fFightDispMult = core.getGMST("fFightDispMult")
 
@@ -25,7 +27,7 @@ local function uprint(...)
             args[i] = tostring(v)
         end
         local messageHeader = "[Mercy]"
-        if omwself then messageHeader = messageHeader .. "[" .. omwself.recordId .. "]" end
+        if omwSelfStatus then messageHeader = messageHeader .. "[" .. omwself.recordId .. "]" end
         print(messageHeader .. ":", table.concat(args, " "))
     end
 end
@@ -554,5 +556,80 @@ local function stringStartsWith(String, Start)
 end
 
 module.stringStartsWith = stringStartsWith
+
+-- Animation-related helper functions
+local attackTypes = { "chop", "slash", "thrust" }
+local function isAttackType(key, suffix)
+    if suffix then suffix = " " .. suffix end
+    if not suffix then suffix = "" end
+    for _, type in ipairs(attackTypes) do
+        if string.find(key, type .. suffix) then
+            return type
+        end
+    end
+    return false
+end
+module.isAttackType = isAttackType
+
+local function isAttackTypeStart(key)
+    return isAttackType(key, "start")
+end
+module.isAttackTypeStart = isAttackTypeStart
+
+local function expandPriority(options)
+    -- This function turns a single priority value into a table of priorities for each bone group
+    if type(options.priority) == "number" then
+        options.priority = {
+            [animation.BONE_GROUP.LeftArm] = options.priority,
+            [animation.BONE_GROUP.LowerBody] = options.priority,
+            [animation.BONE_GROUP.RightArm] = options.priority,
+            [animation.BONE_GROUP.Torso] = options.priority
+        }
+    end
+end
+module.expandPriority = expandPriority
+
+local function uniquifyPriority(options)
+    -- Sometime the engine needs overriden animation to still run in background to satisfy some hidden engine
+    -- logic requirements. Yet if an overriden and overriding animation have the same set of priority values -
+    -- the overriden animation will be removed by the engine and some logic might break. For such a case - this 
+    -- function changes few of the priority values of the overriden function to ensure that it will not be replaced
+    -- by another animation and the engine will remain happy. LeftArm and LowerBody changes are arbitrary and purely
+    -- based on an assumption that no other animation will use that weird combination of priorities.
+    expandPriority(options)
+    if type(options.priority) == "userdata" or type(options.priority) == "table" then
+        options.priority[animation.BONE_GROUP.LeftArm] = options.priority[animation.BONE_GROUP.LeftArm] - 1
+        options.priority[animation.BONE_GROUP.LowerBody] = options.priority[animation.BONE_GROUP.LowerBody] - 1
+    else
+        error("Encountered a priority which is not a number, userdata or table. This should never happen. Priority is: " ..
+              tostring(options.priority))
+    end
+end
+module.uniquifyPriority = uniquifyPriority
+
+local function cloneAnimOptions(opts)
+    local newOpts = shallowTableCopy(opts)
+    if type(opts.priority) ~= "number" then
+        newOpts.priority = shallowTableCopy(opts.priority)
+    end
+    return newOpts
+end
+module.cloneAnimOptions = cloneAnimOptions
+
+local ARMATURE_TYPE = {
+    Any = 0,
+    FirstPerson = 1,
+    ThirdPerson = 2,
+}
+module.ARMATURE_TYPE = ARMATURE_TYPE
+
+local function isMatchingArmatureType(armType)
+    if armType == ARMATURE_TYPE.Any or not armType then return true end
+    local isInFirstPerson = (camStatus and camera.getMode() == camera.MODE.FirstPerson)
+    return (armType == ARMATURE_TYPE.FirstPerson and isInFirstPerson) or
+        (armType == ARMATURE_TYPE.ThirdPerson and not isInFirstPerson)    
+end
+module.isMatchingArmatureType = isMatchingArmatureType
+--------------------------------------------------------
 
 return module
