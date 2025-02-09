@@ -90,6 +90,8 @@ I.AnimationController.addPlayBlendedAnimationHandler(function(groupname, options
     local startKey = options.startkey or options.startKey
     local stopKey = options.stopkey or options.stopKey
 
+    -- print("Animation started", groupname, startKey, stopKey)
+
     -- Learn parent options of animations
     for _, anim in ipairs(animations) do
         if anim.parent and anim.parent == groupname then
