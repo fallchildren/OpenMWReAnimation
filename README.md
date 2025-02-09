@@ -20,7 +20,8 @@ Note: Gifs are fairly low fps, it looks even better in-game.
 ## How to install
 
 - Download this repository as an archive and install using Mod Organizer 2. Or manually place the contents of this repository into your ".../Morrowind/Data Files" folder. 
-- Enable the mod's .omwscript file in "Content Files" tab of the OpenMW launcher.
+- Enable the mod's .omwscript files in "Content Files" tab of the OpenMW launcher ( `ReAnimation_API` and `ReAnimation_v2_Rogue` at the time of writing). 
+- If you _only_ want to use ReAnimation as an API  for another mod (i.e only as a dependency that doesnt add any animations on its own) - only enable `ReAnimation_API` AND delete "Animations" folder from within this mod.
 
 Have fun!
 
