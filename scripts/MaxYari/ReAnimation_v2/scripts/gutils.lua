@@ -271,6 +271,12 @@ local function lerpClamped(a, b, t)
 end
 module.lerpClamped = lerpClamped
 
+local function getSign(val)
+    if val == 0 then return 0 end
+    return val / math.abs(val)
+end
+module.getSign = getSign
+
 
 local function isMarksmanWeapon(weapon)
     if not weapon then return false end

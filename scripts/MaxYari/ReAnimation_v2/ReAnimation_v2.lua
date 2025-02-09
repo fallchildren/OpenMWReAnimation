@@ -3,6 +3,7 @@ local mp = "scripts/MaxYari/ReAnimation_v2/"
 local omwself = require('openmw.self')
 local camera = require('openmw.camera')
 local types = require('openmw.types')
+local core = require("openmw.core")
 
 local animation = require('openmw.animation')
 local I = require('openmw.interfaces')
@@ -162,7 +163,7 @@ local animations = {
         startOnUpdate = true
     },
     {
-        parent = {"idle1s","idle1ssneak"},
+        parent = { "idle1s", "idle1ssneak" },
         groupname = "idleshield",
         condition = function()
             return gutils.isAShield(selfActor:getEquipment(types.Actor.EQUIPMENT_SLOT.CarriedLeft))
@@ -331,23 +332,10 @@ I.AnimationController.addPlayBlendedAnimationHandler(function(groupname, options
 end)
 
 
--- local cameraYaw = omwself.rotation:getYaw()
--- local viewModelYaw = omwself.rotation:getYaw()
 
 
 local function onUpdate(dt)
     if camera.MODE.FirstPerson ~= camera.getMode() then return end
-
-    -- if not animManager.isPlaying("weapononehand1") then
-    --     I.AnimationController.playBlendedAnimation("weapononehand1", {
-    --         startKey = "chop start",
-    --         startkey = "chop start",
-    --         stopKey = "chop large follow stop",
-    --         stopkey = "chop large follow stop",
-    --         priority = 13,
-    --         speed = 2
-    --     })
-    -- end
 
     for _, anim in ipairs(animations) do
         local isParentPlaying = nil
@@ -380,22 +368,6 @@ local function onUpdate(dt)
             anim.running = false
         end
     end
-
-    -- View inertia experiments
-    --print(omwself.controls.pitchChange,omwself.rotation:getPitch())
-
-
-    -- cameraYaw = cameraYaw + omwself.controls.yawChange
-    -- camera.setYaw(cameraYaw)
-    -- omwself.controls.yawChange = 0
-
-    -- local newViewModelYaw = gutils.lerp(viewModelYaw, cameraYaw, 1 - 0.000001 ^ dt)
-    -- if cameraYaw - newViewModelYaw > 0.2 then
-    --     newViewModelYaw = cameraYaw - 0.2
-    -- end
-    -- local deltaModelYaw = newViewModelYaw - viewModelYaw
-    -- viewModelYaw = newViewModelYaw
-    -- omwself.controls.yawChange = deltaModelYaw
 end
 
 
