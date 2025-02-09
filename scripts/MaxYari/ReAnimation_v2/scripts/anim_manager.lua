@@ -8,35 +8,6 @@ local EventsManager = require(mp .. "scripts/events_manager")
 
 local events = EventsManager:new()
 
-local animationConfigs = {
-    stand_ground_idle = {
-        groupname = { "stayaway1", "stayaway2", "stayaway3", "stayaway4" },
-        priority = animation.PRIORITY.Hit,
-        blendmask = animation.BLEND_MASK.LowerBody
-    },
-    surrender_mercy = {
-        groupname = "surrender",
-        startkey = "start",
-        stopkey = "offer start",
-        priority = animation.PRIORITY.Death - 1,
-        blendmask = animation.BLEND_MASK.UpperBody
-    },
-    surrender_offer = {
-        groupname = "surrender",
-        startkey = "offer start",
-        stopkey = "stop",
-        priority = animation.PRIORITY.Death - 1,
-    },
-    surrender_postoffer = {
-        groupname = "surrender",
-        startkey = "place items",
-        stopkey = "stop",
-        priority = animation.PRIORITY.Hit
-    }
-}
-
-
-
 local function addOnKeyHandler(cb)
     events:addEventHandler(cb)
 end
@@ -45,9 +16,7 @@ local function removeOnKeyHandler(cb)
     events:removeEventHandler(cb)
 end
 
-
 local Animation = {}
-
 
 function Animation:play(groupname, opts)
     local anim = {
@@ -98,8 +67,7 @@ local module = {
     Animation = Animation,
     isPlaying = isPlaying,
     addOnKeyHandler = addOnKeyHandler,
-    removeOnKeyHandler = removeOnKeyHandler,
-    animationConfigs = animationConfigs
+    removeOnKeyHandler = removeOnKeyHandler
 }
 
 return module
