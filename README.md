@@ -34,8 +34,7 @@ Compatible with practically any other animation mod. ReAnimation uses OpenMW sys
 ## Vanilla/MWSE compatibility
 
 Not currently compatible. If you would like to port the scripting part to MWSE - please do, I'm not familiar with MWSE and am not planning to change that.
-However please keep this mod as a dependency, instead of reuploading the whole thing.
-local I = require('openmw.interfaces')
+However, if possible - keep this mod as a dependency, instead of reuploading the whole thing.
 
 ## For Modders
 
