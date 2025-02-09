@@ -8,6 +8,7 @@ v2: Rogue includes:
 - Separate sets of animations for sneaking with 1h weapons, daggers and bows.
 - Alternating attack animations for 1h weapons.
 - Other smaller niceties.
+- API for modders to use, e.g. to add alt attack animations to other weapon types in 1st and 3rd person.
 
 ![1h walk](/imgs/demo_1h.gif)
 ![Dagger walk](/imgs/demo_dagger.gif)
